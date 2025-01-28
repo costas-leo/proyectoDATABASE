@@ -1,15 +1,11 @@
 from flask import Flask, request, jsonify
 import mysql.connector
 from datetime import datetime
-
+from conexion import Cconexion
 app = Flask(__name__)
 
 # Configuración de conexión a la base de datos
-db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'database': 'facturacion_telefonica'
-}
+conexion = Cconexion.conexionDataBase()
 
 # Endpoint para calcular el gasto del usuario
 @app.route('/calcular_gasto', methods=['POST'])
@@ -26,7 +22,7 @@ def calcular_gasto():
             return jsonify({'error': 'Faltan datos obligatorios'}), 400
 
         # Conexión a la base de datos
-        conn = mysql.connector.connect(**db_config)
+        conn = mysql.connector.connect(conexion)
         cursor = conn.cursor()
 
         # Consulta para calcular el gasto
